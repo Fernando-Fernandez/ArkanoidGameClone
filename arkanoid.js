@@ -187,8 +187,8 @@ window.onload = function () {
             deltaX = -deltaX;
         }
         // detect ball hitting the bottom or racket
+        let racketRect = racket.getBoundingClientRect();
         if( ballRect.bottom > racketRect.top ) {
-            let racketRect = racket.getBoundingClientRect();
             if( ballRect.right >= racketRect.left
                     && ballRect.left <= racketRect.right ) {
                 
