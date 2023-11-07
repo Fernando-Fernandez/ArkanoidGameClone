@@ -34,7 +34,7 @@ window.onload = function () {
         let tileWidth = containerRect.width / tilesPerRow;
         let tileHeight = 20;
         for( let j = 0; j < numberOfRows; j ++ ) {
-            let tileTop = j * tileHeight;
+            let tileTop = ( j + 2 ) * tileHeight;
             for( let i = 0; i < tilesPerRow; i ++ ) {
                 let new_tile = document.createElement( 'div' );
                 new_tile.className = 'tile';
@@ -113,6 +113,7 @@ window.onload = function () {
         let ballRect = ball.getBoundingClientRect();
 
         let ballMiddleX = ( ballRect.left + ballRect.right ) / 2;
+        let ballMiddleY = ( ballRect.top + ballRect.bottom ) / 2;
 
         let tileIndexesToDelete = [];
 
@@ -125,9 +126,9 @@ window.onload = function () {
             }
             let tileRect = tileStructure.rect;
 
-            let middleHit = ( ballMiddleX > tileRect.left 
+            let middleXHit = ( ballMiddleX > tileRect.left 
                             && ballMiddleX < tileRect.right );
-            if( middleHit ) {
+            if( middleXHit ) {
                 // ball contact with tile bottom
                 if( ballRect.top < tileRect.bottom 
                         && ballRect.bottom > tileRect.bottom ) {
@@ -145,7 +146,9 @@ window.onload = function () {
                 }
             }
 
-            if( ballRect.top < tileRect.bottom ) {
+            let middleYHit = ( ballMiddleY > tileRect.top 
+                            && ballMiddleY < tileRect.bottom );
+            if( middleYHit ) {
                 // ball contact with tile left
                 if( ballRect.left < tileRect.left 
                         && ballRect.right > tileRect.left ) {
@@ -184,12 +187,12 @@ window.onload = function () {
             deltaX = -deltaX;
         }
         // detect ball hitting the bottom or racket
-        if( ballRect.bottom > containerRect.bottom ) {
+        if( ballRect.bottom > racketRect.top ) {
             let racketRect = racket.getBoundingClientRect();
             if( ballRect.right >= racketRect.left
                     && ballRect.left <= racketRect.right ) {
                 
-                // TODO:  determine angle of the bounce
+                // determine angle of the bounce
                 let bouncePoint = ballMiddleX - racketRect.left;
                 let racketPct = Math.abs( bouncePoint / racketRect.width );
                 if( racketPct >= 0.4 && racketPct < 0.6 ) {
@@ -198,7 +201,7 @@ window.onload = function () {
                     deltaX = 0.5 * sign;
                 } else 
                     if( racketPct >= 0.25 && racketPct < 0.75 ) {
-                        // normalize angle of the bounce
+                        // normal angle of the bounce
                         let sign = Math.sign( deltaX );
                         deltaX = sign;
                     } else 
