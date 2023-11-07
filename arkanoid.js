@@ -182,8 +182,12 @@ window.onload = function () {
             deltaY = -deltaY;
         }
         // detect collision with sides
-        if( ballRect.left < containerRect.left 
-                || ballRect.right > containerRect.right ) {
+        if( ballRect.left < containerRect.left
+                && deltaX < 0 ) {
+            deltaX = -deltaX;
+        }
+        if( ballRect.right > containerRect.right
+                && deltaX > 0 ) {
             deltaX = -deltaX;
         }
         // detect ball hitting the bottom or racket
